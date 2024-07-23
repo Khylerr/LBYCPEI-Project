@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField; // Updated import
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +26,7 @@ public class LoginController {
     private Button login_button;
 
     @FXML
-    private TextField password_field;
+    private PasswordField password_field; // Updated field type
 
     @FXML
     private TextField username_field;
@@ -102,10 +103,15 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("cashiermainmenu.fxml"));
             Parent root = loader.load();
+
+            InventoryCashier controller = loader.getController();
+            controller.setStage(stage);
+
             Scene scene = new Scene(root, 800, 480);
             stage.setScene(scene);
             stage.setTitle("Cashier Main Menu");
             stage.show();
+
             showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + role);
         } catch (IOException e) {
             e.printStackTrace();

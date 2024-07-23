@@ -22,9 +22,7 @@ public class CSVReader {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                // Validate the format before creating User
                 if (values.length == 3) {
-                    // Assume User constructor takes username, password, and role
                     users.add(new User(values[0].trim(), values[1].trim(), values[2].trim()));
                 } else {
                     System.err.println("Invalid line format: " + line);

@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
-    private final StringProperty id;
-    private final StringProperty name;
-    private final DoubleProperty price;
-    private final IntegerProperty quantity;
+    private final SimpleStringProperty id;
+    private final SimpleStringProperty name;
+    private final SimpleDoubleProperty price;
+    private final SimpleIntegerProperty quantity;
 
     public Item(String id, String name, double price, int quantity) {
         this.id = new SimpleStringProperty(id);
@@ -24,62 +24,69 @@ public class Item {
         this.quantity = new SimpleIntegerProperty(quantity);
     }
 
-    public StringProperty idProperty() {
-        return id;
-    }
-
-    public StringProperty nameProperty() {
-        return name;
-    }
-
-    public DoubleProperty priceProperty() {
-        return price;
-    }
-
-    public IntegerProperty quantityProperty() {
-        return quantity;
-    }
-
     public String getId() {
         return id.get();
+    }
+
+    public StringProperty idProperty() {
+        return id;
     }
 
     public String getName() {
         return name.get();
     }
 
+    public StringProperty nameProperty() {
+        return name;
+    }
+
     public double getPrice() {
         return price.get();
+    }
+
+    public DoubleProperty priceProperty() {
+        return price;
     }
 
     public int getQuantity() {
         return quantity.get();
     }
 
+    public IntegerProperty quantityProperty() {
+        return quantity;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity.set(quantity);
     }
 
-    public static List<Item> loadItemsFromCSV(String filename) {
+    public static List<Item> loadItemsFromCSV(InputStream csvInputStream) throws IOException {
         List<Item> items = new ArrayList<>();
-        try (InputStream is = Item.class.getResourceAsStream(filename);
-             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            if (is == null) {
-                throw new IOException("Resource not found: " + filename);
-            }
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(csvInputStream))) {
             String line;
-            br.readLine(); // Skip header line
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length == 4) {
-                    Item item = new Item(values[0], values[1], Double.parseDouble(values[2]), Integer.parseInt(values[3]));
-                    items.add(item);
+            boolean isHeader = true;  // Flag to skip header row
+            while ((line = reader.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;  // Skip the header row
+                    continue;
+                }
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    try {
+                        String id = parts[0];
+                        String name = parts[1];
+                        double price = Double.parseDouble(parts[2].trim());
+                        int quantity = Integer.parseInt(parts[3].trim());
+                        items.add(new Item(id, name, price, quantity));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Skipping invalid line: " + line);
+                        // Log error or handle invalid data
+                    }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return items;
     }
 
 }
+

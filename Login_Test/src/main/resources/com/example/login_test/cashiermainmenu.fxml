@@ -6,37 +6,60 @@
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <TextField fx:id="searchField" layoutX="28.0" layoutY="239.0" />
-        <TreeTableView fx:id="table_1" editable="true" layoutX="28.0" layoutY="26.0" prefHeight="200.0" prefWidth="351.0">
-            <columns>
-                <TreeTableColumn fx:id="itemID" prefWidth="63.20001220703125" text="ID" />
-                <TreeTableColumn fx:id="itemName" prefWidth="200.0" text="Item Name" />
-                <TreeTableColumn fx:id="itemPrice" prefWidth="86.20001220703125" text="Price" />
-            </columns>
-        </TreeTableView>
-        <Button fx:id="searchbutton" layoutX="178.0" layoutY="239.0" mnemonicParsing="false" text="Search Item Name" />
-        <TextField fx:id="searchFieldID" layoutX="28.0" layoutY="275.0" />
-        <Button fx:id="searchbuttonID" layoutX="178.0" layoutY="275.0" mnemonicParsing="false" text="Search ID" />
-        <TreeTableView fx:id="table_2" layoutX="395.0" layoutY="26.0" prefHeight="200.0" prefWidth="324.0">
-            <columns>
-                <TreeTableColumn fx:id="itemNumberSelected" prefWidth="75.0" text="No. of Items" />
-                <TreeTableColumn fx:id="ItemNameSelected" prefWidth="248.0" text="Item Name" />
-            </columns>
-        </TreeTableView>
-        <Label fx:id="totalLabel" layoutX="395.0" layoutY="244.0" prefHeight="16.0" prefWidth="200.0" text="Total">
-            <font>
-                <Font name="Arial" size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="cashAmount" layoutX="395.0" layoutY="275.0" prefHeight="25.0" prefWidth="200.0" text="Enter Cash Amount" />
-        <Label fx:id="totalLabel1" layoutX="395.0" layoutY="316.0" prefHeight="16.0" prefWidth="200.0" text="Total Change">
-            <font>
-                <Font name="Arial" size="14.0" />
-            </font>
-        </Label>
-    </children>
+
+<Pane fx:controller="com.example.login_test.InventoryCashier" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TreeTableView fx:id="table_1" layoutX="14.0" layoutY="14.0" prefHeight="228.0" prefWidth="476.0">
+        <columns>
+          <TreeTableColumn fx:id="item_id" prefWidth="57.600006103515625" text="Item ID" />
+            <TreeTableColumn fx:id="item_name" prefWidth="235.99999237060547" text="Item Name" />
+            <TreeTableColumn fx:id="price" prefWidth="81.5999755859375" text="Price" />
+            <TreeTableColumn fx:id="quantity" prefWidth="102.40005493164062" text="Quantity" />
+        </columns>
+      </TreeTableView>
+      <Line endX="-99.99996948242188" endY="475.0" layoutX="601.0" startX="-100.0" />
+      <TextField fx:id="search_item_name_field" layoutX="14.0" layoutY="251.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="search_id_field" layoutX="14.0" layoutY="284.0" prefHeight="25.0" prefWidth="210.0" />
+      <Button fx:id="search_name_button" onAction="#handleSearchButton" layoutX="230.0" layoutY="251.0" mnemonicParsing="false" text="Search Item Name" />
+      <Button fx:id="search_id_button" onAction="#handleSearchButtonID" layoutX="230.0" layoutY="284.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" text="Search Item ID" />
+      <TreeTableView fx:id="table_2" layoutX="511.0" layoutY="14.0" prefHeight="228.0" prefWidth="284.0">
+        <columns>
+          <TreeTableColumn fx:id="numberOfItems" prefWidth="81.59994506835938" text="No. of Items" />
+          <TreeTableColumn fx:id="item_name_selected" prefWidth="135.99993896484375" text="Item Name" />
+            <TreeTableColumn fx:id="price_selected" prefWidth="68.800048828125" text="Price" />
+        </columns>
+      </TreeTableView>
+      <Button fx:id="print_receipt" layoutX="611.0" layoutY="417.0" mnemonicParsing="false" text="Print Receipt" />
+      <Label fx:id="subtotal" layoutX="511.0" layoutY="253.0" prefHeight="21.0" prefWidth="71.0" text="Subtotal:">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="manage_button" layoutX="193.0" layoutY="405.0" mnemonicParsing="false" text="Manage Accounts..." />
+      <Button fx:id="update_inventory_button" layoutX="349.0" layoutY="250.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="140.0" text="Update Inventory" />
+      <Label fx:id="subtotal_value" layoutX="682.0" layoutY="253.0" prefHeight="21.0" prefWidth="113.0" textAlignment="RIGHT">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="amount_paid" layoutX="511.0" layoutY="286.0" prefHeight="21.0" prefWidth="113.0" text="Amount Paid:">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="511.0" layoutY="319.0" prefHeight="21.0" prefWidth="113.0" text="Total Change:">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="total_change_value" layoutX="682.0" layoutY="319.0" prefHeight="21.0" prefWidth="113.0" textAlignment="RIGHT">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="amount_paid_value" layoutX="646.0" layoutY="284.0" />
+   </children>
 </Pane>
