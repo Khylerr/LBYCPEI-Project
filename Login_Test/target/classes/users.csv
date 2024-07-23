@@ -1,0 +1,4 @@
+username,password,role
+john_doe,password123,employee
+jane_smith,securePass,manager
+admin,adminPass,admin
