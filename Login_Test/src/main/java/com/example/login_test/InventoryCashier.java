@@ -4,6 +4,10 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,6 +88,8 @@ public class InventoryCashier {
     private TreeItem<Item> originalRoot; // Store the original root
 
     private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     public void initialize() {
@@ -237,6 +243,35 @@ public class InventoryCashier {
         }
     }
 
+    @FXML
+    void switchToManageAccounts(ActionEvent event) {
+        try {
+            root = FXMLLoader.load(getClass().getResource("userControl.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void logout(ActionEvent event) {
+        try {
+            root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void updateCSV() throws IOException {
         // Get the path to the CSV file in the resources folder
         InputStream inputStream = getClass().getResourceAsStream("/items.csv");
@@ -276,4 +311,7 @@ public class InventoryCashier {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+
 }
+
