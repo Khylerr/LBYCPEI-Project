@@ -119,7 +119,6 @@ public class UsersPaneController {
 
     public void loadUserData() {
         UserCSVRead();
-
         ObservableList<User> users = FXCollections.observableArrayList();
         for (int i = 0; i < CSVUsername.size(); i++) {
             users.add(new User(CSVUsername.get(i), CSVPassword.get(i), CSVRole.get(i)));
@@ -136,6 +135,7 @@ public class UsersPaneController {
 
     public void puttoArray()
     {
+        UserCSVRead();
         ObservableList<User> users = FXCollections.observableArrayList();
         for (int i = 0; i < CSVUsername.size(); i++) {
             users.add(new User(CSVUsername.get(i), CSVPassword.get(i), CSVRole.get(i)));
@@ -144,7 +144,7 @@ public class UsersPaneController {
 
 
 
-        @FXML
+    @FXML
     void onAddUserAction(ActionEvent event)
     {
         String usernameToAdd = AddUserField.getText();
@@ -167,10 +167,16 @@ public class UsersPaneController {
             AddUserField.clear();
             AddPassField.clear();
             AddRoleField.clear();
+
+
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        CSVUsername.add(usernameToAdd);
+        CSVPassword.add(passwordToAdd);
+        CSVRole.add(roleToAdd);
 
         UserCSVRead();
         puttoArray();
@@ -185,13 +191,14 @@ public class UsersPaneController {
     {
 
         String usernameToDelete = DelUserField.getText();
-        int index = 0;
+        int index = -1;
+
 
         for(int i = 0; i < CSVUsername.size(); i++)
         {
             if (Objects.equals(usernameToDelete, CSVUsername.get(i)))
             {
-                index = i+1;
+                index = i;
                 break;
             }
         }
@@ -210,7 +217,6 @@ public class UsersPaneController {
             }
         }
 
-        UserCSVRead();
         puttoArray();
 
 
