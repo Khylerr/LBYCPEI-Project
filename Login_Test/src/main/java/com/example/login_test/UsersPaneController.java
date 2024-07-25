@@ -84,7 +84,7 @@ public class UsersPaneController {
     {
         BufferedReader reader = null;
         String line = "";
-        InputStream File = getClass().getResourceAsStream("/users.csv");
+        String File = filepath;
 
         if (File == null) {
             System.err.println("Resource not found: users.csv");
@@ -92,7 +92,7 @@ public class UsersPaneController {
         }
 
         try {
-            reader = new BufferedReader(new InputStreamReader(File));
+            reader = new BufferedReader(new FileReader(File));
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
 
@@ -137,9 +137,12 @@ public class UsersPaneController {
     {
         UserCSVRead();
         ObservableList<User> users = FXCollections.observableArrayList();
-        for (int i = 0; i < CSVUsername.size(); i++) {
+        for (int i = 0; i < CSVUsername.size(); i++)
+        {
             users.add(new User(CSVUsername.get(i), CSVPassword.get(i), CSVRole.get(i)));
         }
+
+
     }
 
 
@@ -168,18 +171,22 @@ public class UsersPaneController {
             AddPassField.clear();
             AddRoleField.clear();
 
+            CSVUsername.add(usernameToAdd);
+            CSVPassword.add(passwordToAdd);
+            CSVRole.add(roleToAdd);
+
+            for(int i = 0; i < CSVUsername.size(); i++)
+            {
+                System.out.println("Users:\n" + CSVUsername.get(i));
+            }
+
+
+
 
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        CSVUsername.add(usernameToAdd);
-        CSVPassword.add(passwordToAdd);
-        CSVRole.add(roleToAdd);
-
-        UserCSVRead();
-        puttoArray();
 
 
         showAlert(Alert.AlertType.INFORMATION, "Added", "User added successfully");
@@ -191,16 +198,27 @@ public class UsersPaneController {
     {
 
         String usernameToDelete = DelUserField.getText();
-        int index = -1;
-
+        int index = 0;
 
         for(int i = 0; i < CSVUsername.size(); i++)
         {
             if (Objects.equals(usernameToDelete, CSVUsername.get(i)))
             {
-                index = i;
+                index = i+1;
+                showAlert(Alert.AlertType.INFORMATION, "Deleted", "User deleted successfully");
                 break;
             }
+
+            else if (index == 0)
+            {
+                showAlert(Alert.AlertType.INFORMATION, "Deleted", "No user found");
+                break;
+            }
+        }
+
+        for(int i = 0; i < CSVUsername.size(); i++)
+        {
+           System.out.println("Users:\n" + CSVUsername.get(i));
         }
 
         System.out.print(index);
@@ -208,6 +226,7 @@ public class UsersPaneController {
         delete(filepath, index);
 
         DelUserField.clear();
+        index = 0;
 
         ObservableList<TreeItem<User>> items = userTableView.getRoot().getChildren();
         for (TreeItem<User> item : items) {
@@ -216,6 +235,9 @@ public class UsersPaneController {
                 break;
             }
         }
+        CSVUsername.clear();
+        CSVPassword.clear();
+        CSVRole.clear();
 
         puttoArray();
 
@@ -224,7 +246,10 @@ public class UsersPaneController {
 
     @FXML
     void onReturnAction(ActionEvent event) {
+        initialize();
+
         try {
+
             root = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -284,7 +309,6 @@ public class UsersPaneController {
             System.out.println(e);
        }
 
-       showAlert(Alert.AlertType.INFORMATION, "Deleted", "User deleted successfully");
 
 
    }
