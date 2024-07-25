@@ -1,6 +1,8 @@
 package com.example.login_test;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -36,6 +38,8 @@ public class LoginController {
 
     private List<User> users;
     private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     public LoginController() {
         try {
@@ -54,7 +58,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         loadImages();
-        login_button.setOnAction(event -> handleLogin());
+
     }
 
     private void loadImages() {
@@ -72,11 +76,13 @@ public class LoginController {
         this.stage = stage;
     }
 
-    private void handleLogin() {
+    @FXML
+    void handleLogin(ActionEvent event) {
         if (users == null) {
             showAlert(AlertType.ERROR, "Error", "User data not loaded.");
             return;
         }
+
 
         String username = username_field.getText();
         String password = password_field.getText();
@@ -84,7 +90,27 @@ public class LoginController {
         User user = findUserByUsername(username);
 
         if (user != null && user.getPassword().equals(password)) {
-            openCashierMainMenu(user.getRole());
+
+            String role = user.getRole();
+            try {
+                root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Inventory Manager");
+
+                stage.show();
+                showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + role);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            username_field.clear();
+            password_field.clear();
+            username = "";
+            password = "";
+
+
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password");
         }
