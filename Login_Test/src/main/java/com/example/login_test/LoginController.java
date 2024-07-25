@@ -40,6 +40,7 @@ public class LoginController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    public String roleToSend;
 
     public LoginController() {
         try {
@@ -57,7 +58,7 @@ public class LoginController {
 
     @FXML
     private void initialize() {
-       
+
         loadImages();
 
     }
@@ -84,7 +85,6 @@ public class LoginController {
             return;
         }
 
-
         String username = username_field.getText();
         String password = password_field.getText();
 
@@ -93,6 +93,7 @@ public class LoginController {
         if (user != null && user.getPassword().equals(password)) {
 
             String role = user.getRole();
+            RoleData.setRole(user.getRole());
             try {
                 root = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -126,26 +127,6 @@ public class LoginController {
         return null;
     }
 
-    private void openCashierMainMenu(String role) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cashiermainmenu.fxml"));
-            Parent root = loader.load();
-
-            InventoryCashier controller = loader.getController();
-            controller.setStage(stage);
-
-            Scene scene = new Scene(root, 800, 480);
-            stage.setScene(scene);
-            stage.setTitle("Cashier Main Menu");
-            stage.show();
-
-            showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + role);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(AlertType.ERROR, "Error", "Could not open main menu.");
-        }
-    }
-
     private void showAlert(AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -153,4 +134,14 @@ public class LoginController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    public void setRole(String role)
+    {
+        this.roleToSend = role;
+    }
+    public String getRole()
+    {
+        return roleToSend;
+    }
+
 }
