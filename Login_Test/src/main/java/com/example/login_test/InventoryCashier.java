@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class InventoryCashier {
 
@@ -90,6 +91,8 @@ public class InventoryCashier {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    LoginController Role = new LoginController();
 
     @FXML
     public void initialize() {
@@ -268,35 +271,57 @@ public class InventoryCashier {
 
     @FXML
     void switchToManageAccounts(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("userControl.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Account Manager");
 
-            stage.show();
+        String role = RoleData.getRole();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (Objects.equals(role, "admin"))
+        {
+            try {
+                root = FXMLLoader.load(getClass().getResource("userControl.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Account Manager");
+
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        else
+        {
+            showAlert(Alert.AlertType.ERROR, "Error", "You do not have permission.");
+
+        }
+
     }
 
     @FXML
     void switchToUpdateInventory(ActionEvent event)
     {
-        try {
-            root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Inventory Manager");
+        String role = RoleData.getRole();
+        if (Objects.equals(role, "admin") || Objects.equals(role, "manager"))
+        {
+            try {
+                root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Inventory Manager");
 
-            stage.show();
+                stage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        else
+        {
+            showAlert(Alert.AlertType.ERROR, "Error", "You do not have permission.");
+            System.out.println(role);
+        }
+
     }
 
     @FXML
