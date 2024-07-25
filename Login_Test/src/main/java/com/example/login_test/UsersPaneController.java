@@ -177,7 +177,7 @@ public class UsersPaneController {
 
             for(int i = 0; i < CSVUsername.size(); i++)
             {
-                System.out.println("Users:\n" + CSVUsername.get(i));
+                System.out.println(CSVUsername.get(i));
             }
 
 
@@ -205,25 +205,27 @@ public class UsersPaneController {
             if (Objects.equals(usernameToDelete, CSVUsername.get(i)))
             {
                 index = i+1;
-                showAlert(Alert.AlertType.INFORMATION, "Deleted", "User deleted successfully");
+                showAlert(Alert.AlertType.INFORMATION, "Deleted", "User deleted successfully.");
+
                 break;
             }
 
-            else if (index == 0)
-            {
-                showAlert(Alert.AlertType.INFORMATION, "Deleted", "No user found");
-                break;
-            }
+
         }
 
         for(int i = 0; i < CSVUsername.size(); i++)
         {
-           System.out.println("Users:\n" + CSVUsername.get(i));
+           System.out.println(CSVUsername.get(i));
         }
 
         System.out.print(index);
 
         delete(filepath, index);
+
+        if (index == 0) {
+            showAlert(Alert.AlertType.INFORMATION, "Deleted", "No user found.");
+        }
+
 
         DelUserField.clear();
         index = 0;
