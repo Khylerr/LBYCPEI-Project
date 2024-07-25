@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="621.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.InventoryController">
+   <children>
+      <TreeTableView fx:id="inventoryTableTree" layoutX="107.0" layoutY="46.0" prefHeight="243.0" prefWidth="560.0">
+        <columns>
+          <TreeTableColumn fx:id="IDColumn" prefWidth="154.0" text="Item ID" />
+          <TreeTableColumn fx:id="NameColumn" prefWidth="245.0" text="Item Name" />
+            <TreeTableColumn fx:id="PriceColumn" prefWidth="79.0" text="Price" />
+            <TreeTableColumn fx:id="QuantityColumn" prefWidth="81.0" text="Quantity" />
+        </columns>
+      </TreeTableView>
+      <Label layoutX="286.0" layoutY="7.0" text="Current Inventory">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="180.0" layoutY="296.0" prefWidth="149.0" text="Add Item">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="itemIDFieldtoAdd" layoutX="160.0" layoutY="354.0" />
+      <Label layoutX="68.0" layoutY="357.0" text="Item ID">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="57.0" layoutY="410.0" text="Item Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="68.0" layoutY="465.0" text="Price">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="514.0" text="Quantity">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ItemNameField" layoutX="160.0" layoutY="407.0" />
+      <TextField fx:id="PriceField" layoutX="160.0" layoutY="462.0" />
+      <TextField fx:id="QtyFIeld" layoutX="160.0" layoutY="511.0" />
+      <Button layoutX="216.0" layoutY="559.0" mnemonicParsing="false" onAction="#addItems" text="Add" />
+      <Line endX="-100.0" endY="323.0" layoutX="480.0" layoutY="298.0" startX="-100.0" startY="-9.0" />
+      <Label layoutX="411.0" layoutY="379.0" text="Item ID">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ItemIDToDel" layoutX="484.0" layoutY="377.0" />
+      <Button layoutX="529.0" layoutY="450.0" mnemonicParsing="false" onAction="#removeItems" text="Remove" />
+      <Label layoutX="492.0" layoutY="296.0" prefWidth="149.0" text="Remove Item">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="30.0" layoutY="584.0" mnemonicParsing="false" onAction="#returnToMainMenu" text="Return" />
+   </children>
+</AnchorPane>
