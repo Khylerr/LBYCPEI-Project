@@ -224,6 +224,27 @@ public class InventoryCashier {
         calculateAndUpdateSubtotal();
     }
 
+    public void reloadDataFromCSV() {
+        try {
+            items.clear();
+            originalRoot.getChildren().clear();
+
+            // Load new items from the CSV
+            List<Item> loadedItems = Item.loadItemsFromCSV(getClass().getResourceAsStream("/items.csv"));
+            System.out.println("Reloaded " + loadedItems.size() + " items");
+
+            items.addAll(loadedItems);
+
+            populateTreeView();
+        } catch (IOException e) {
+            System.err.println("Error reloading items: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not reload items from CSV.");
+        }
+    }
+
+
+
+
     private void calculateAndUpdateSubtotal() {
         Platform.runLater(() -> {
             double total = calculateTotal();
@@ -243,6 +264,8 @@ public class InventoryCashier {
         }
     }
 
+
+
     @FXML
     void switchToManageAccounts(ActionEvent event) {
         try {
@@ -250,6 +273,25 @@ public class InventoryCashier {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setTitle("Account Manager");
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void switchToUpdateInventory(ActionEvent event)
+    {
+        try {
+            root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inventory Manager");
+
             stage.show();
 
         } catch (IOException e) {
@@ -314,4 +356,3 @@ public class InventoryCashier {
 
 
 }
-
