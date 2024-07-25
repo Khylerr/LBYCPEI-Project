@@ -57,6 +57,7 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+       
         loadImages();
 
     }
@@ -93,7 +94,7 @@ public class LoginController {
 
             String role = user.getRole();
             try {
-                root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
+                root = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
