@@ -59,6 +59,18 @@ public class LoginController {
     @FXML
     private void initialize() {
 
+        try {
+            this.users = CSVReader.readUsersFromCSV(getClass().getResourceAsStream("/users.csv"));
+            if (this.users != null) {
+                System.out.println("Users loaded: " + users.size());
+            } else {
+                System.err.println("No users loaded.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading users: " + e.getMessage());
+            this.users = new ArrayList<>(); // Avoid null pointer
+        }
+
         loadImages();
 
     }
