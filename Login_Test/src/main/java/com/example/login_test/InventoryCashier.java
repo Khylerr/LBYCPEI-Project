@@ -92,7 +92,11 @@ public class InventoryCashier {
     private Scene scene;
     private Parent root;
 
-    LoginController Role = new LoginController();
+    public ArrayList<String> forReceiptName = new ArrayList<>();
+    public ArrayList<Double> forReceiptPrice = new ArrayList<>();
+    public ArrayList<Integer> forReceiptQty = new ArrayList<>();
+
+
 
     @FXML
     public void initialize() {
@@ -209,23 +213,52 @@ public class InventoryCashier {
         // Check if the item already exists in table_2
         boolean itemExists = false;
         for (TreeItem<Item> treeItem : table_2.getRoot().getChildren()) {
-            if (treeItem.getValue().getId().equals(item.getId())) {
+            Item currentItem = treeItem.getValue();
+            if (currentItem.getId().equals(item.getId())) {
                 itemExists = true;
-                item.setQuantity(item.getQuantity() + 1);
+                // Update the quantity of the existing item
+                currentItem.setQuantity(currentItem.getQuantity() + 1);
                 table_2.refresh();
+
+                // Add item name to forReceipt
+                forReceiptName.add(currentItem.getName());
+                forReceiptPrice.add(currentItem.getPrice());
+                forReceiptQty.add(currentItem.getQuantity());
+
+                ReceiptData.setReceiptName(forReceiptName);
+                ReceiptData.setReceiptPrice(forReceiptPrice);
+                ReceiptData.setReceiptQty(forReceiptQty);
+                
                 break;
             }
         }
 
         // If item doesn't exist, add it with a quantity of 1
         if (!itemExists) {
-            TreeItem<Item> newItem = new TreeItem<>(new Item(item.getId(), item.getName(), item.getPrice(), 1));
+            Item newItemData = new Item(item.getId(), item.getName(), item.getPrice(), 1);
+            TreeItem<Item> newItem = new TreeItem<>(newItemData);
             table_2.getRoot().getChildren().add(newItem);
+
+            // Add new item name to forReceipt
+            forReceiptName.add(newItemData.getName());
+            forReceiptPrice.add(newItemData.getPrice());
+            forReceiptQty.add(newItemData.getQuantity());
+
+            ReceiptData.setReceiptName(forReceiptName);
+            ReceiptData.setReceiptPrice(forReceiptPrice);
+            ReceiptData.setReceiptQty(forReceiptQty);
+        }
+
+        // Print all items in forReceipt (optional)
+        for (String receiptItem : forReceiptName) {
+            System.out.println(receiptItem);
         }
 
         // Ensure that the changes in table_2 are reflected in the subtotal
         calculateAndUpdateSubtotal();
     }
+
+
 
     public void reloadDataFromCSV() {
         try {
@@ -266,7 +299,6 @@ public class InventoryCashier {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to update CSV file.");
         }
     }
-
 
 
     @FXML
