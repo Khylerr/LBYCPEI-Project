@@ -114,20 +114,10 @@ public class InventoryCashier {
         numberOfItems.setCellValueFactory(cellData -> cellData.getValue().getValue().quantityProperty().asObject());
         price_selected.setCellValueFactory(cellData -> cellData.getValue().getValue().priceProperty().asObject());
 
-        initializeFile();
+        initializeFile(); // Ensure file is created only if it doesn't exist
 
         try {
             List<Item> loadedItems = Item.loadItemsFromCSV(new FileInputStream(filepath));
-            System.out.println("Loaded " + loadedItems.size() + " items");
-            items.addAll(loadedItems);
-            populateTreeView(); // Populate the TreeTableView with items
-        } catch (IOException e) {
-            System.err.println("Error loading items: " + e.getMessage());
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not load items from CSV.");
-        }
-
-        try {
-            List<Item> loadedItems = Item.loadItemsFromCSV(getClass().getResourceAsStream("/items.csv"));
             System.out.println("Loaded " + loadedItems.size() + " items");
             items.addAll(loadedItems);
             populateTreeView(); // Populate the TreeTableView with items
@@ -157,12 +147,16 @@ public class InventoryCashier {
     }
 
     private void initializeFile() {
-        URL resource = getClass().getResource("/items.csv");
         File file = new File(filepath);
 
         if (!file.exists()) {
-            try (InputStream in = resource.openStream();
+            // File does not exist, copy from resources
+            try (InputStream in = getClass().getResourceAsStream("/items.csv");
                  OutputStream out = new FileOutputStream(file)) {
+
+                if (in == null) {
+                    throw new FileNotFoundException("Resource file not found");
+                }
 
                 byte[] buffer = new byte[1024];
                 int length;
@@ -174,6 +168,7 @@ public class InventoryCashier {
             }
         }
     }
+
 
     private void populateTreeView() {
         originalRoot = new TreeItem<>(new Item("0", "Root", 0.0, 0));

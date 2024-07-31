@@ -1,4 +1,5 @@
-username,password,role
+Username,Password,Role
 john_doe,password123,employee
 jane_smith,securePass,manager
 admin,adminPass,admin
+andrei,master,admin

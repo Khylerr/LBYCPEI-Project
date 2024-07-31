@@ -26,7 +26,8 @@ public class UsersPaneController {
     ArrayList<String> CSVPassword = new ArrayList<>();
     ArrayList<String> CSVRole = new ArrayList<>();
 
-    private String filepath = "users.csv";
+    // Define the path to the users.csv file in the user's home directory
+    private String filepath = System.getProperty("user.home") + File.separator + "users.csv";
 
     @FXML
     private TextField AddPassField;
@@ -57,7 +58,31 @@ public class UsersPaneController {
         usernameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getUsername()));
         PasswordColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getPassword()));
         RoleColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getRole()));
+        initializeFile();
         loadUserData();
+    }
+
+    private void initializeFile() {
+        File file = new File(filepath);
+
+        if (!file.exists()) {
+            // File does not exist, copy from resources
+            try (InputStream in = getClass().getResourceAsStream("/default_users.csv");
+                 OutputStream out = new FileOutputStream(file)) {
+
+                if (in == null) {
+                    throw new FileNotFoundException("Resource file not found");
+                }
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void loadUserData() {

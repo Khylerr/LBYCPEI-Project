@@ -43,8 +43,8 @@ public class LoginController {
     private Parent root;
     public String roleToSend;
 
-    // Define the relative path to the users.csv file
-    private String filepath = "users.csv";
+    // Define the path to the users.csv file in the user's home directory
+    private String filepath = System.getProperty("user.home") + File.separator + "users.csv";
 
     public LoginController() {
         initializeFile();
@@ -61,18 +61,25 @@ public class LoginController {
         File file = new File(filepath);
 
         if (!file.exists()) {
-            // Use the path to the resource file from the classpath
-            try (InputStream in = getClass().getResourceAsStream("/default_users.csv");
+            try (InputStream in = getClass().getResourceAsStream("/users.csv"); // Resource file
                  OutputStream out = new FileOutputStream(file)) {
+
+                if (in == null) {
+                    throw new FileNotFoundException("Resource file /users.csv not found in classpath");
+                }
 
                 byte[] buffer = new byte[1024];
                 int length;
                 while ((length = in.read(buffer)) > 0) {
                     out.write(buffer, 0, length);
                 }
+                System.out.println("File copied successfully to: " + file.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
+                System.err.println("Error copying file: " + e.getMessage());
             }
+        } else {
+            System.out.println("File already exists: " + file.getAbsolutePath());
         }
     }
 

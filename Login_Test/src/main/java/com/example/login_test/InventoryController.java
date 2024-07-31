@@ -105,7 +105,6 @@ public class InventoryController {
         }
     }
 
-
     public void InventoryCSVRead() {
         BufferedReader reader = null;
         String line = "";
@@ -198,26 +197,28 @@ public class InventoryController {
     @FXML
     void removeItems(ActionEvent event) {
         String idToDelete = ItemIDToDel.getText();
-        int index = 0;
+        int index = -1;
 
         for (int i = 0; i < CSVItemID.size(); i++) {
             if (Objects.equals(idToDelete, CSVItemID.get(i))) {
-                index = i + 1;
-                showAlert(Alert.AlertType.INFORMATION, "Deleted", "Item deleted successfully.");
+                index = i;
                 break;
             }
         }
 
-        System.out.print(index);
-
-        delete(filepath, index);
-
-        if (index == 0) {
+        if (index == -1) {
             showAlert(Alert.AlertType.INFORMATION, "Deleted", "No item found.");
+            return;
         }
 
+        CSVItemID.remove(index);
+        CSVItemName.remove(index);
+        CSVPrice.remove(index);
+        CSVQuantity.remove(index);
+
+        updateCSV();
+
         ItemIDToDel.clear();
-        index = 0;
 
         ObservableList<TreeItem<Inventory>> items = inventoryTableTree.getRoot().getChildren();
         for (TreeItem<Inventory> item : items) {
@@ -226,12 +227,8 @@ public class InventoryController {
                 break;
             }
         }
-        CSVItemID.clear();
-        CSVPrice.clear();
-        CSVItemName.clear();
-        CSVQuantity.clear();
 
-        puttoArray();
+        showAlert(Alert.AlertType.INFORMATION, "Deleted", "Item deleted successfully.");
     }
 
     @FXML
@@ -326,7 +323,7 @@ public class InventoryController {
             String line;
             int currentLine = 0;
             while ((line = reader.readLine()) != null) {
-                if (currentLine != index - 1) {
+                if (currentLine != index) {
                     lines.add(line);
                 }
                 currentLine++;
