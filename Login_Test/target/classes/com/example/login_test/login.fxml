@@ -15,15 +15,12 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.LoginController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#264573" height="435.0" layoutX="-21.0" layoutY="-13.0" opacity="0.69" stroke="TRANSPARENT" strokeType="INSIDE" width="382.0" />
-      <Circle fill="#00bcd4" layoutX="85.0" layoutY="-4.0" radius="52.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="89.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="7.0" layoutY="40.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="25.0" layoutY="356.0" radius="80.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="-22.0" layoutY="229.0" radius="71.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="586.0" layoutY="386.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <TextField fx:id="username_field" layoutX="382.0" layoutY="188.0" prefHeight="25.0" prefWidth="169.0">
-         <font>
-            <Font name="Segoe UI" size="12.0" />
-         </font></TextField>
+      <TextField fx:id="username_field" layoutX="382.0" layoutY="188.0" prefHeight="25.0" prefWidth="169.0" />
       <PasswordField fx:id="password_field" layoutX="382.0" layoutY="239.0" prefHeight="25.0" prefWidth="169.0" />
       <Label layoutX="382.0" layoutY="168.0" text="Username" textFill="#fff7f7">
          <font>
@@ -63,13 +60,10 @@
       <Circle fill="#00bcd4" layoutX="457.0" layoutY="-16.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="118.0" layoutY="400.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fill="#00bcd4" layoutX="457.0" layoutY="412.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="74.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="74.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../assets/2-removebg-preview.png" />
          </image>
-         <effect>
-            <DropShadow />
-         </effect>
       </ImageView>
    </children>
 </Pane>
