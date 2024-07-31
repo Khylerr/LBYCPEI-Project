@@ -18,6 +18,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.net.URL;
 
 public class InventoryCashier {
 
@@ -26,6 +27,8 @@ public class InventoryCashier {
 
     @FXML
     private TextField amount_paid_value;
+
+    private String filepath = System.getProperty("user.home") + File.separator + "items.csv";
 
     @FXML
     private TreeTableColumn<Item, String> item_id;
@@ -111,6 +114,18 @@ public class InventoryCashier {
         numberOfItems.setCellValueFactory(cellData -> cellData.getValue().getValue().quantityProperty().asObject());
         price_selected.setCellValueFactory(cellData -> cellData.getValue().getValue().priceProperty().asObject());
 
+        initializeFile();
+
+        try {
+            List<Item> loadedItems = Item.loadItemsFromCSV(new FileInputStream(filepath));
+            System.out.println("Loaded " + loadedItems.size() + " items");
+            items.addAll(loadedItems);
+            populateTreeView(); // Populate the TreeTableView with items
+        } catch (IOException e) {
+            System.err.println("Error loading items: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not load items from CSV.");
+        }
+
         try {
             List<Item> loadedItems = Item.loadItemsFromCSV(getClass().getResourceAsStream("/items.csv"));
             System.out.println("Loaded " + loadedItems.size() + " items");
@@ -139,6 +154,25 @@ public class InventoryCashier {
         table_2.getRoot().getChildren().addListener((javafx.collections.ListChangeListener<TreeItem<Item>>) change -> {
             calculateAndUpdateSubtotal();
         });
+    }
+
+    private void initializeFile() {
+        URL resource = getClass().getResource("/items.csv");
+        File file = new File(filepath);
+
+        if (!file.exists()) {
+            try (InputStream in = resource.openStream();
+                 OutputStream out = new FileOutputStream(file)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void populateTreeView() {
@@ -228,7 +262,7 @@ public class InventoryCashier {
                 ReceiptData.setReceiptName(forReceiptName);
                 ReceiptData.setReceiptPrice(forReceiptPrice);
                 ReceiptData.setReceiptQty(forReceiptQty);
-                
+
                 break;
             }
         }
@@ -266,7 +300,7 @@ public class InventoryCashier {
             originalRoot.getChildren().clear();
 
             // Load new items from the CSV
-            List<Item> loadedItems = Item.loadItemsFromCSV(getClass().getResourceAsStream("/items.csv"));
+            List<Item> loadedItems = Item.loadItemsFromCSV(new FileInputStream(filepath));
             System.out.println("Reloaded " + loadedItems.size() + " items");
 
             items.addAll(loadedItems);
@@ -309,13 +343,17 @@ public class InventoryCashier {
         if (Objects.equals(role, "admin"))
         {
             try {
-                root = FXMLLoader.load(getClass().getResource("userControl.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
+                Parent newRoot = FXMLLoader.load(getClass().getResource("userControl.fxml"));
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                double currentWidth = 813;
+                double currentHeight = 505;
+
+                SceneTransitionUtil.switchSceneWithFadeAndScale(stage, newRoot, currentWidth, currentHeight);
+
                 stage.setTitle("Account Manager");
 
-                stage.show();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -336,13 +374,18 @@ public class InventoryCashier {
         if (Objects.equals(role, "admin") || Objects.equals(role, "manager"))
         {
             try {
-                root = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
+                // Load the new root from FXML
+                Parent newRoot = FXMLLoader.load(getClass().getResource("InventoryEdit.fxml"));
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                double currentWidth = 820;
+                double currentHeight = 652;
+
+                SceneTransitionUtil.switchSceneWithFadeAndScale(stage, newRoot, currentWidth, currentHeight);
+
                 stage.setTitle("Inventory Manager");
 
-                stage.show();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -359,16 +402,19 @@ public class InventoryCashier {
     @FXML
     void logout(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("login.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+            Parent newRoot = loader.load(); // Load a new root node
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            double newWidth = 620;
+            double newHeight = 420;
+
+            SceneTransitionUtil.switchSceneWithFadeAndScale(stage, newRoot, newWidth, newHeight);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void updateCSV() throws IOException {
@@ -390,7 +436,7 @@ public class InventoryCashier {
         }
 
         // Write to the temporary CSV file
-        try (PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filepath))) {
             writer.println("ID,Name,Price,Quantity"); // Header
             for (TreeItem<Item> treeItem : table_2.getRoot().getChildren()) {
                 Item item = treeItem.getValue();

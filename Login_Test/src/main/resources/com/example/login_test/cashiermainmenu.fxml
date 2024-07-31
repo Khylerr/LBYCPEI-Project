@@ -6,60 +6,97 @@
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.InventoryCashier">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="803.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.InventoryCashier">
    <children>
-      <TreeTableView fx:id="table_1" layoutX="14.0" layoutY="14.0" prefHeight="228.0" prefWidth="476.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5086" height="487.0" layoutX="-13.0" layoutY="-12.0" opacity="0.65" stroke="TRANSPARENT" strokeType="INSIDE" width="514.0" />
+      <Circle fill="#00bcd4" layoutY="155.0" radius="57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="87.0" layoutY="-55.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="-34.0" layoutY="28.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="42.0" layoutY="475.0" radius="87.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="805.0" layoutY="155.0" radius="57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="682.0" layoutY="-12.0" radius="57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="805.0" layoutY="31.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="803.0" layoutY="490.0" radius="87.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <TreeTableView fx:id="table_1" layoutX="14.0" layoutY="14.0" prefHeight="228.0" prefWidth="476.0" style="-fx-background-color: #f5f5dc;">
         <columns>
-          <TreeTableColumn fx:id="item_id" prefWidth="57.600006103515625" text="Item ID" />
-            <TreeTableColumn fx:id="item_name" prefWidth="235.99999237060547" text="Item Name" />
-            <TreeTableColumn fx:id="price" prefWidth="81.5999755859375" text="Price" />
-            <TreeTableColumn fx:id="quantity" prefWidth="102.40005493164062" text="Quantity" />
+          <TreeTableColumn fx:id="item_id" prefWidth="57.600006103515625" resizable="false" text="Item ID" />
+            <TreeTableColumn fx:id="item_name" prefWidth="235.99999237060547" resizable="false" text="Item Name" />
+            <TreeTableColumn fx:id="price" prefWidth="81.5999755859375" resizable="false" text="Price" />
+            <TreeTableColumn fx:id="quantity" prefWidth="102.40005493164062" resizable="false" text="Quantity" />
         </columns>
       </TreeTableView>
-      <Line endX="-99.99996948242188" endY="475.0" layoutX="601.0" startX="-100.0" />
-      <TextField fx:id="search_item_name_field" layoutX="14.0" layoutY="251.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="search_id_field" layoutX="14.0" layoutY="284.0" prefHeight="25.0" prefWidth="210.0" />
-      <Button fx:id="search_name_button" layoutX="230.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleSearchButton" text="Search Item Name" />
-      <Button fx:id="search_id_button" layoutX="230.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleSearchButtonID" prefHeight="25.0" prefWidth="113.0" text="Search Item ID" />
-      <TreeTableView fx:id="table_2" layoutX="511.0" layoutY="14.0" prefHeight="228.0" prefWidth="284.0">
+      <TextField fx:id="search_item_name_field" layoutX="14.0" layoutY="251.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #cccccc;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="search_id_field" layoutX="14.0" layoutY="284.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #cccccc;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font></TextField>
+      <Button fx:id="search_name_button" layoutX="221.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="23.0" prefWidth="122.0" style="-fx-background-color: #00A8A8;" text="Search Item Name" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="search_id_button" layoutX="221.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleSearchButtonID" prefHeight="25.0" prefWidth="122.0" style="-fx-background-color: #00A8A8;" text="Search Item ID" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <TreeTableView fx:id="table_2" layoutX="511.0" layoutY="14.0" prefHeight="228.0" prefWidth="284.0" style="-fx-background-color: #f5f5dc;">
         <columns>
           <TreeTableColumn fx:id="numberOfItems" prefWidth="81.59994506835938" text="No. of Items" />
           <TreeTableColumn fx:id="item_name_selected" prefWidth="135.99993896484375" text="Item Name" />
             <TreeTableColumn fx:id="price_selected" prefWidth="68.800048828125" text="Price" />
         </columns>
       </TreeTableView>
-      <Button fx:id="print_receipt" layoutX="611.0" layoutY="417.0" mnemonicParsing="false" text="Print Receipt" />
-      <Label fx:id="subtotal" layoutX="511.0" layoutY="253.0" prefHeight="21.0" prefWidth="71.0" text="Subtotal:">
+      <Button fx:id="print_receipt" onAction="#handlePrintReceipt" layoutX="611.0" layoutY="405.0" mnemonicParsing="false" style="-fx-background-color: #00bcd4; -fx-border-color: #424242;" text="Print Receipt" textFill="WHITE">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <Label fx:id="subtotal" layoutX="511.0" layoutY="253.0" prefHeight="21.0" prefWidth="71.0" text="Subtotal:" textFill="#fffcfc">
+         <font>
+            <Font name="Segoe UI" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="manage_button" layoutX="193.0" layoutY="405.0" mnemonicParsing="false" onAction="#switchToManageAccounts" text="Manage Accounts..." />
-      <Button fx:id="update_inventory_button" layoutX="349.0" layoutY="250.0" mnemonicParsing="false" onAction="#switchToUpdateInventory" prefHeight="60.0" prefWidth="140.0" text="Update Inventory" />
-      <Label fx:id="subtotal_value" layoutX="682.0" layoutY="253.0" prefHeight="21.0" prefWidth="113.0" textAlignment="RIGHT">
+      <Button fx:id="manage_button" layoutX="193.0" layoutY="405.0" mnemonicParsing="false" onAction="#switchToManageAccounts" style="-fx-background-color: #1abc9c; -fx-border-color: #159d82;" text="Manage Accounts..." textFill="WHITE">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="update_inventory_button" layoutX="349.0" layoutY="250.0" mnemonicParsing="false" onAction="#switchToUpdateInventory" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #32CD32; -fx-border-color: #00b300;" text="Update Inventory" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <Label fx:id="subtotal_value" layoutX="646.0" layoutY="253.0" prefHeight="21.0" prefWidth="149.0" textAlignment="RIGHT" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="amount_paid" layoutX="511.0" layoutY="286.0" prefHeight="21.0" prefWidth="113.0" text="Amount Paid:">
+      <Label fx:id="amount_paid" layoutX="511.0" layoutY="286.0" prefHeight="21.0" prefWidth="113.0" text="Amount Paid:" textFill="WHITE">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Segoe UI" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="511.0" layoutY="319.0" prefHeight="21.0" prefWidth="113.0" text="Total Change:">
+      <Label layoutX="511.0" layoutY="319.0" prefHeight="21.0" prefWidth="113.0" text="Total Change:" textFill="#fffcfc">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Segoe UI" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="total_change_value" layoutX="682.0" layoutY="319.0" prefHeight="21.0" prefWidth="113.0" textAlignment="RIGHT">
+      <Label fx:id="total_change_value" layoutX="646.0" layoutY="319.0" prefHeight="21.0" prefWidth="149.0" textAlignment="RIGHT" textFill="WHITE">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Segoe UI" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="amount_paid_value" layoutX="646.0" layoutY="284.0" />
-      <Button fx:id="manage_button1" layoutX="14.0" layoutY="430.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
+      <TextField fx:id="amount_paid_value" layoutX="646.0" layoutY="284.0" style="-fx-background-color: #cccccc;" />
+      <Button fx:id="manage_button1" layoutX="14.0" layoutY="430.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #ff1a1a;" text="Log out" textFill="#fcfafa">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font></Button>
+      <Circle fill="#00bcd4" layoutX="735.0" layoutY="500.0" radius="57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="814.0" layoutY="388.0" radius="48.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="119.0" layoutY="490.0" radius="57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="14.0" layoutY="378.0" radius="48.0" stroke="TRANSPARENT" strokeType="INSIDE" />
    </children>
 </Pane>

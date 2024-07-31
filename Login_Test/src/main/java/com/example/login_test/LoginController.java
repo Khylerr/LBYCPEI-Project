@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField; // Updated import
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class LoginController {
     private Button login_button;
 
     @FXML
-    private PasswordField password_field; // Updated field type
+    private PasswordField password_field;
 
     @FXML
     private TextField username_field;
@@ -42,37 +43,53 @@ public class LoginController {
     private Parent root;
     public String roleToSend;
 
+    // Define the relative path to the users.csv file
+    private String filepath = "users.csv";
+
     public LoginController() {
-        try {
-            this.users = CSVReader.readUsersFromCSV(getClass().getResourceAsStream("/users.csv"));
-            if (this.users != null) {
-                System.out.println("Users loaded: " + users.size());
-            } else {
-                System.err.println("No users loaded.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error loading users: " + e.getMessage());
-            this.users = new ArrayList<>(); // Avoid null pointer
-        }
+        initializeFile();
+        loadUsers();
     }
 
     @FXML
     private void initialize() {
-
-        try {
-            this.users = CSVReader.readUsersFromCSV(getClass().getResourceAsStream("/users.csv"));
-            if (this.users != null) {
-                System.out.println("Users loaded: " + users.size());
-            } else {
-                System.err.println("No users loaded.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error loading users: " + e.getMessage());
-            this.users = new ArrayList<>(); // Avoid null pointer
-        }
-
+        loadUsers();
         loadImages();
+    }
 
+    private void initializeFile() {
+        File file = new File(filepath);
+
+        if (!file.exists()) {
+            // Use the path to the resource file from the classpath
+            try (InputStream in = getClass().getResourceAsStream("/default_users.csv");
+                 OutputStream out = new FileOutputStream(file)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadUsers() {
+        users = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 3) {
+                    users.add(new User(data[0], data[1], data[2]));
+                }
+            }
+            System.out.println("Users loaded: " + users.size());
+        } catch (IOException e) {
+            System.err.println("Error loading users: " + e.getMessage());
+        }
     }
 
     private void loadImages() {
@@ -103,27 +120,24 @@ public class LoginController {
         User user = findUserByUsername(username);
 
         if (user != null && user.getPassword().equals(password)) {
-
             String role = user.getRole();
             RoleData.setRole(user.getRole());
             try {
-                root = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setTitle("Inventory Manager");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("cashiermainmenu.fxml"));
+                Parent newRoot = loader.load();
 
-                stage.show();
-                showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + role);
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                double newWidth = 820;
+                double newHeight = 500;
+
+                SceneTransitionUtil.switchSceneWithFadeAndScale(stage, newRoot, newWidth, newHeight);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
             username_field.clear();
             password_field.clear();
-            username = "";
-            password = "";
-
 
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password");
@@ -147,13 +161,11 @@ public class LoginController {
         alert.showAndWait();
     }
 
-    public void setRole(String role)
-    {
+    public void setRole(String role) {
         this.roleToSend = role;
     }
-    public String getRole()
-    {
+
+    public String getRole() {
         return roleToSend;
     }
-
 }

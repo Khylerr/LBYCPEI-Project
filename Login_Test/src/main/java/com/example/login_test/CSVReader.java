@@ -12,7 +12,7 @@ public class CSVReader {
     public static List<User> readUsersFromCSV(InputStream inputStream) {
         List<User> users = new ArrayList<>();
         String line;
-
+        boolean isHeader = true;  // Flag to skip header row
         // Check if the InputStream is null
         if (inputStream == null) {
             System.err.println("InputStream is null, resource not found.");
@@ -21,6 +21,10 @@ public class CSVReader {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             while ((line = br.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;  // Skip the header row
+                    continue;
+                }
                 String[] values = line.split(",");
                 if (values.length == 3) {
                     users.add(new User(values[0].trim(), values[1].trim(), values[2].trim()));

@@ -12,19 +12,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.stage.Stage;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.io.*;
-import javafx.scene.control.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Objects;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TreeTableView;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.io.FileWriter;
-import java.util.Objects;
-
-public class InventoryController
-{
+public class InventoryController {
 
     private Stage stage;
     private Scene scene;
@@ -35,9 +34,8 @@ public class InventoryController
     ArrayList<String> CSVPrice = new ArrayList<>();
     ArrayList<String> CSVQuantity = new ArrayList<>();
 
-
-    String filepath =  "C:\\Users\\Khyler\\IdeaProjects\\LBYCPEI-Project-main\\Login_Test\\src\\main\\resources\\items.csv";
-    //CHANGE FILEPATH BASED ON WHERE IT IS LOCATEDDDD!!!!
+    // Path to the writable CSV file
+    String filepath = System.getProperty("user.home") + "/items.csv";
 
     @FXML
     private TextField ItemIDToDel;
@@ -55,6 +53,15 @@ public class InventoryController
     private TextField itemIDFieldtoAdd;
 
     @FXML
+    private TextField itemIDFieldtoAddforEdit;
+
+    @FXML
+    private TextField PriceFieldforEdit;
+
+    @FXML
+    private TextField QtyFIeldforEdit;
+
+    @FXML
     private TreeTableColumn<Inventory, String> QuantityColumn;
 
     @FXML
@@ -66,12 +73,12 @@ public class InventoryController
     @FXML
     private TreeTableColumn<Inventory, String> PriceColumn;
 
-
     @FXML
     private TreeTableColumn<Inventory, String> IDColumn;
 
     @FXML
     public void initialize() {
+        initializeFile(); // Ensure file is initialized
         IDColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getitemID()));
         PriceColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getPrice()));
         NameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getitemName()));
@@ -79,19 +86,38 @@ public class InventoryController
         loadInventoryData();
     }
 
-    public void InventoryCSVRead()
-    {
+    private void initializeFile() {
+        URL resource = getClass().getResource("/items.csv");
+        File file = new File(filepath);
+
+        if (!file.exists()) {
+            try (InputStream in = resource.openStream();
+                 OutputStream out = new FileOutputStream(file)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void InventoryCSVRead() {
         BufferedReader reader = null;
         String line = "";
-        String File = filepath;
+        File file = new File(filepath);
 
-        if (File == null) {
-            System.err.println("Resource not found: users.csv");
+        if (!file.exists()) {
+            System.err.println("File not found: " + filepath);
             return;
         }
 
         try {
-            reader = new BufferedReader(new FileReader(File));
+            reader = new BufferedReader(new FileReader(file));
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
 
@@ -99,12 +125,9 @@ public class InventoryController
                 CSVItemName.add(row[1]);
                 CSVPrice.add(row[2]);
                 CSVQuantity.add(row[3]);
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-
         } finally {
             try {
                 if (reader != null) {
@@ -113,9 +136,7 @@ public class InventoryController
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     public void loadInventoryData() {
@@ -136,7 +157,6 @@ public class InventoryController
 
     @FXML
     void addItems(ActionEvent event) {
-
         String idToAdd = itemIDFieldtoAdd.getText();
         String nameToAdd = ItemNameField.getText();
         String priceToAdd = PriceField.getText();
@@ -168,34 +188,24 @@ public class InventoryController
             CSVPrice.add(priceToAdd);
             CSVQuantity.add(qtyToAdd);
 
-
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         showAlert(Alert.AlertType.INFORMATION, "Added", "Item added successfully");
     }
 
-
-
     @FXML
     void removeItems(ActionEvent event) {
-
         String idToDelete = ItemIDToDel.getText();
         int index = 0;
 
-        for(int i = 0; i < CSVItemID.size(); i++)
-        {
-            if (Objects.equals(idToDelete, CSVItemID.get(i)))
-            {
-                index = i+1;
+        for (int i = 0; i < CSVItemID.size(); i++) {
+            if (Objects.equals(idToDelete, CSVItemID.get(i))) {
+                index = i + 1;
                 showAlert(Alert.AlertType.INFORMATION, "Deleted", "Item deleted successfully.");
                 break;
             }
-
-
         }
 
         System.out.print(index);
@@ -205,7 +215,6 @@ public class InventoryController
         if (index == 0) {
             showAlert(Alert.AlertType.INFORMATION, "Deleted", "No item found.");
         }
-
 
         ItemIDToDel.clear();
         index = 0;
@@ -222,102 +231,124 @@ public class InventoryController
         CSVItemName.clear();
         CSVQuantity.clear();
 
-
         puttoArray();
-
     }
 
     @FXML
-    void returnToMainMenu(ActionEvent event)
-    {
-        initialize();
-        try {
-            root = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Cashier Main Menu");
-            stage.show();
+    void editItems(ActionEvent event) {
+        String idToEdit = itemIDFieldtoAddforEdit.getText();
+        String newPrice = PriceFieldforEdit.getText();
+        String newQuantity = QtyFIeldforEdit.getText();
 
+        int index = -1;
+        for (int i = 0; i < CSVItemID.size(); i++) {
+            if (Objects.equals(idToEdit, CSVItemID.get(i))) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Item ID not found.");
+            return;
+        }
+
+        CSVPrice.set(index, newPrice);
+        CSVQuantity.set(index, newQuantity);
+
+        updateCSV();
+        loadInventoryData();
+
+        itemIDFieldtoAddforEdit.clear();
+        PriceFieldforEdit.clear();
+        QtyFIeldforEdit.clear();
+
+        showAlert(Alert.AlertType.INFORMATION, "Edited", "Item edited successfully.");
+    }
+
+    private void updateCSV() {
+        try {
+            FileWriter fw = new FileWriter(filepath, false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+
+            for (int i = 0; i < CSVItemID.size(); i++) {
+                pw.println(CSVItemID.get(i) + "," + CSVItemName.get(i) + "," + CSVPrice.get(i) + "," + CSVQuantity.get(i));
+            }
+
+            pw.flush();
+            pw.close();
+            bw.close();
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void puttoArray()
-    {
+    @FXML
+    void returnToMainMenu(ActionEvent event) {
+        try {
+            Parent newRoot = FXMLLoader.load(getClass().getResource("cashiermainmenu.fxml"));
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            double currentWidth = 820;
+            double currentHeight = 500;
+
+            SceneTransitionUtil.switchSceneWithFadeAndScale(stage, newRoot, currentWidth, currentHeight);
+
+            stage.setTitle("Inventory Manager");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void puttoArray() {
         InventoryCSVRead();
         ObservableList<Inventory> inventories = FXCollections.observableArrayList();
 
-            for (int i = 0; i < CSVItemID.size(); i++)
-            {
-                inventories.add(new Inventory(CSVItemID.get(i), CSVItemName.get(i), CSVPrice.get(i), CSVQuantity.get(i)));
-            }
+        for (int i = 0; i < CSVItemID.size(); i++) {
+            inventories.add(new Inventory(CSVItemID.get(i), CSVItemName.get(i), CSVPrice.get(i), CSVQuantity.get(i)));
+        }
 
+        TreeItem<Inventory> root = new TreeItem<>(new Inventory("Root", "", "", ""));
+        for (Inventory inventory : inventories) {
+            root.getChildren().add(new TreeItem<>(inventory));
+        }
 
-
+        inventoryTableTree.setRoot(root);
+        inventoryTableTree.setShowRoot(false);
     }
 
-    private void delete(String filepath, int deleteLine)
-    {
-        String tempFile = "temp.txt";
-        File oldFile = new File(filepath);
-        File newFile = new File(tempFile);
-
-        int line = 0;
-        String currentLine;
-
-        try
-        {
-            FileWriter fw = new FileWriter(tempFile, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-
-            FileReader fr = new FileReader(filepath);
-            BufferedReader br = new BufferedReader(fr);
-
-            while((currentLine = br.readLine()) != null)
-            {
-                line++;
-
-                if(deleteLine != line)
-                {
-                    pw.println(currentLine);
-
+    private void delete(String filepath, int index) {
+        ArrayList<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            int currentLine = 0;
+            while ((line = reader.readLine()) != null) {
+                if (currentLine != index - 1) {
+                    lines.add(line);
                 }
+                currentLine++;
             }
-
-            pw.flush();
-            pw.close();
-            fr.close();
-            br.close();
-            bw.close();
-            fw.close();
-
-            oldFile.delete();
-            File dump = new File(filepath);
-            newFile.renameTo(dump);
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        catch(Exception e)
-        {
-            System.out.println(e);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
     }
-
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(content);
-        alert.showAndWait();
+        alert.show();
     }
-
-
-
 }
-

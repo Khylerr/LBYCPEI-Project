@@ -2,33 +2,39 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.PasswordField?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-      xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login_test.LoginController">
    <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#264573" height="435.0" layoutX="-21.0" layoutY="-13.0" opacity="0.69" stroke="TRANSPARENT" strokeType="INSIDE" width="382.0" />
+      <Circle fill="#00bcd4" layoutX="89.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="7.0" layoutY="40.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="25.0" layoutY="356.0" radius="80.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="-22.0" layoutY="229.0" radius="71.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="586.0" layoutY="386.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <TextField fx:id="username_field" layoutX="382.0" layoutY="188.0" prefHeight="25.0" prefWidth="169.0" />
       <PasswordField fx:id="password_field" layoutX="382.0" layoutY="239.0" prefHeight="25.0" prefWidth="169.0" />
-      <Label layoutX="382.0" layoutY="168.0" text="Username">
+      <Label layoutX="382.0" layoutY="168.0" text="Username" textFill="#fff7f7">
          <font>
-            <Font name="Arial" size="17.0" />
+            <Font name="Segoe UI" size="17.0" />
          </font>
       </Label>
-      <Label layoutX="382.0" layoutY="219.0" text="Password">
+      <Label layoutX="382.0" layoutY="219.0" text="Password" textFill="WHITE">
          <font>
-            <Font name="Arial" size="17.0" />
+            <Font name="Segoe UI" size="17.0" />
          </font>
       </Label>
-      <Button fx:id="login_button" layoutX="430.0" layoutY="276.0" mnemonicParsing="false" text="Log-in">
+      <Button fx:id="login_button" layoutX="430.0" layoutY="276.0" mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: #00A8A8;" text="Log-in" textFill="#fffdfd">
          <font>
-            <Font size="14.0" />
+            <Font name="Segoe UI Bold" size="14.0" />
          </font>
       </Button>
       <ImageView fitHeight="94.0" fitWidth="91.0" layoutX="376.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
@@ -36,12 +42,12 @@
             <Image url="@../../../assets/user_icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="489.0" layoutY="96.0" text="Sign In">
+      <Label layoutX="482.0" layoutY="98.0" text="Sign In" textFill="#fffafa">
          <font>
-            <Font size="19.0" />
+            <Font name="Segoe UI Bold" size="19.0" />
          </font>
       </Label>
-      <ImageView fitHeight="256.0" fitWidth="304.0" layoutX="22.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="176.0" fitWidth="291.0" layoutX="29.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../assets/tech_shop_image.jpg" />
          </image>
@@ -49,13 +55,15 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Label layoutX="52.0" layoutY="48.0" text="Group 4 and Co. Tech Shop">
-         <font>
-            <Font name="Book Antiqua" size="20.0" />
-         </font>
-      </Label>
+      <Circle fill="#00bcd4" layoutX="586.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="618.0" layoutY="96.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="457.0" layoutY="-16.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="118.0" layoutY="400.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Circle fill="#00bcd4" layoutX="457.0" layoutY="412.0" radius="56.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="74.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../assets/2-removebg-preview.png" />
+         </image>
+      </ImageView>
    </children>
-   <effect>
-      <InnerShadow />
-   </effect>
 </Pane>

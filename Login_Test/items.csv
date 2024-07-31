@@ -1,0 +1,41 @@
+id,name,price,quantity
+1,Intel Core i9-12900K,600,90
+2,AMD Ryzen 9 5900X,450,54
+3,NVIDIA GeForce RTX 3080,700,62
+4,AMD Radeon RX 6800 XT,650,77
+5,Corsair Vengeance LPX 16GB,80,41
+6,Kingston Fury Beast 32GB,150,93
+7,Samsung 970 EVO 1TB SSD,120,12
+8,Western Digital Blue 1TB HDD,50,29
+9,ASUS ROG Strix B550-F,170,10
+10,Gigabyte AORUS X570,220,53
+11,EVGA SuperNOVA 750W,120,95
+12,Corsair RM850x,150,8
+13,Noctua NH-D15,90,66
+14,Cooler Master Hyper 212,40,40
+15,Lian Li PC-O11 Dynamic,130,85
+16,Fractal Design Meshify C,90,31
+17,Razer Huntsman Elite Keyboard,200,59
+18,Logitech G502 Hero Mouse,50,23
+19,ASUS TUF Gaming Monitor,300,95
+20,Dell Ultrasharp 27,600,41
+21,TP-Link Archer AX6000 Router,300,88
+22,Seagate Barracuda 2TB HDD,60,52
+23,Crucial P3 500GB SSD,60,13
+24,MSI MPG B550 Gaming Edge,160,37
+25,ASRock Phantom Gaming 4,140,79
+26,HyperX Cloud II Headset,100,62
+27,Logitech C920 Webcam,80,85
+28,Razer Kraken X,50,47
+29,be quiet! Pure Rock 2,50,25
+30,ASUS ROG Strix 850W,160,91
+31,MSI GeForce GTX 1660,250,73
+32,EVGA RTX 3070,500,64
+33,Intel Optane 32GB,40,27
+34,TP-Link WiFi 6 PCIe Card,50,18
+35,SilverStone Sugo 14,90,70
+36,Phanteks Eclipse P400A,80,11
+37,Deepcool Gammaxx 400,40,76
+38,Noctua NF-A12x25 Fan,30,14
+39,G.Skill Ripjaws V 16GB,75,48
+40,ADATA XPG SX8200 1TB,120,68
